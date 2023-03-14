@@ -34,13 +34,17 @@ export class Server {
             return buckets.Buckets;
         });
 
-        this.fastify.get('/s3/:bucket/:key', async (request: FastifyRequest<{
+        this.fastify.get('/s3/:bucket', async (request: FastifyRequest<{
             Params: {
                 bucket: string;
-                key: string;
+            },
+            Querystring: {
+                key?: string;
             }
         }>, reply) => {
-            const {bucket, key} = request.params;
+            const {bucket} = request.params;
+            const {key} = request.query;
+            if(!key) return reply.code(400).send({error: 'Missing resource key'});
             const object = await this.s3.send(new GetObjectCommand({
                 Bucket: bucket,
                 Key: key,
