@@ -36,16 +36,14 @@ export class Server {
             return buckets.Buckets;
         });
 
-        this.fastify.get('/s3/:bucket', async (request: FastifyRequest<{
+        this.fastify.get('/s3/:bucket/*', async (request: FastifyRequest<{
             Params: {
                 bucket: string;
+                '*': string;
             },
-            Querystring: {
-                key?: string;
-            }
         }>, reply) => {
             const {bucket} = request.params;
-            const {key} = request.query;
+            const key = request.params['*'];
             if(!key) return reply.code(400).send({error: 'Missing resource key'});
             const { Body, ContentType } = await this.s3.send(new GetObjectCommand({
                 Bucket: bucket,
@@ -54,10 +52,7 @@ export class Server {
             if(!Body) return reply.code(404).send({error: 'Resource not found'});
             const arr = await Body.transformToByteArray();
             const buff = Buffer.from(arr);
-            reply.send({
-                contentType: ContentType,
-                file: buff,
-            });
+            reply.send(buff);
         });
     }
 
