@@ -84,6 +84,8 @@ export class Server {
             
                
                 <p><i>Copyright &copy; 2023 Marcin Kondrat. All rights reserved.</i></p>
+                <br/>
+                <p><i><s>shut up, this website isn't ugly, i just hate css so much that i didn't use it here <3</s></i></p>
 `);
         });
 
