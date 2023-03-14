@@ -53,7 +53,7 @@ export class Server {
             }));
             if(!Body) return reply.code(404).send({error: 'Resource not found'});
             const arr = await Body.transformToByteArray();
-            const buff = Buffer.concat([arr]);
+            const buff = Buffer.from(arr);
             reply.send(buff);
         });
     }
