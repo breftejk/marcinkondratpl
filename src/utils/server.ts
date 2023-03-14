@@ -49,10 +49,12 @@ export class Server {
                 Bucket: bucket,
                 Key: key,
             }));
+            console.log(object);
             const body = object.Body;
+            console.log(body);
             if(!body) return reply.code(404).send({error: 'Resource not found'});
             const buffer = await body.transformToByteArray();
-            reply.header('Content-Type', object.ContentType).send(object.Body);
+            reply.header('Content-Type', object.ContentType).send(buffer);
         });
     }
 
