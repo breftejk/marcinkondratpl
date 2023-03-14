@@ -1,0 +1,22 @@
+{
+  "name": "marcinkondrat",
+  "private": true,
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@fastify/rate-limit": "^8.0.0",
+    "aws-sdk": "^2.1334.0",
+    "dotenv": "^16.0.3",
+    "fastify": "^4.14.1"
+  },
+  "devDependencies": {
+    "@types/node": "^18.15.3"
+  }
+}
