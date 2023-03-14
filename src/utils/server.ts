@@ -45,16 +45,15 @@ export class Server {
             const {bucket} = request.params;
             const {key} = request.query;
             if(!key) return reply.code(400).send({error: 'Missing resource key'});
-            const object = await this.s3.send(new GetObjectCommand({
+            const { Body, ContentType } = await this.s3.send(new GetObjectCommand({
                 Bucket: bucket,
                 Key: key,
             }));
-            console.log(object);
-            const body = object.Body;
-            console.log(body);
-            if(!body) return reply.code(404).send({error: 'Resource not found'});
-            const buffer = await body.transformToByteArray();
-            reply.header('Content-Type', object.ContentType).send(buffer);
+            if(!Body) return reply.code(404).send({error: 'Resource not found'});
+            const buff = Buffer.from(Body as any).toString('base64');
+            return reply.code(200).headers({
+                'Content-Type': ContentType as string,
+            }).send(buff);
         });
     }
 
