@@ -43,7 +43,7 @@ export class Server {
             },
         }>, reply) => {
             const {bucket} = request.params;
-            const key = request.params['*'];
+            const key = request.params['*'].split('?')[0];
             if(!key) return reply.code(400).send({error: 'Missing resource key'});
             const { Body } = await this.s3.send(new GetObjectCommand({
                 Bucket: bucket,
