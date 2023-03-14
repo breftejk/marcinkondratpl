@@ -50,9 +50,11 @@ export class Server {
                 Key: key,
             }));
             if(!Body) return reply.code(404).send({error: 'Resource not found'});
-            const transformed = await Body.transformToString('utf-8');
-            const buffer = Buffer.from(transformed);
-            reply.header('Content-Type', ContentType as string).send(buffer);
+            // @ts-ignore
+            Body.once('data', (chunk) => {
+                reply.header('Content-Type', ContentType as string);
+                reply.send(chunk);
+            })
         });
     }
 
