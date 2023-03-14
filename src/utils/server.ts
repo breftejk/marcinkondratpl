@@ -32,6 +32,9 @@ export class Server {
         this.fastify.get('/', async (request, reply) => {
             reply.header('Content-Type', 'text/html; charset=utf-8').send(`
                 <h1>Marcin Kondrat</h1>
+                <p>Hi, I'm Marcin. I'm a software developer from Poland.</p>
+                <p>I'm currently working on my <a href="https://assistantscenter.com" target="_blank">Assistants Center</a> project.</p>
+                <p>You can find my GitHub <a href="https://github.com/breftejk">here</a></p>
                 
                 <hr/>
                 
