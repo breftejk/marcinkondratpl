@@ -4,6 +4,8 @@ import FastifyRateLimit from "@fastify/rate-limit";
 import {S3Client, ListBucketsCommand, GetObjectCommand} from "@aws-sdk/client-s3";
 
 import Environment from "../environment";
+import {Readable} from "stream";
+import {Buffer} from "buffer";
 
 export class Server {
     public readonly fastify: FastifyInstance;
@@ -50,11 +52,9 @@ export class Server {
                 Key: key,
             }));
             if(!Body) return reply.code(404).send({error: 'Resource not found'});
-            // @ts-ignore
-            Body.once('data', (chunk) => {
-                reply.header('Content-Type', ContentType as string);
-                reply.send(chunk);
-            })
+            const arr = await Body.transformToByteArray();
+            const buff = Buffer.concat([arr]);
+            reply.header('Content-Type', ContentType as string).send(buff);
         });
     }
 
