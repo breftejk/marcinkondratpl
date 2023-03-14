@@ -49,6 +49,7 @@ export class Server {
                 Bucket: bucket,
                 Key: key,
             }));
+            console.log(object);
             reply.header('Content-Type', object.ContentType).send(object.Body);
         });
     }
