@@ -1,11 +1,9 @@
 import Fastify, {FastifyInstance, FastifyRequest} from "fastify";
 import FastifyRateLimit from "@fastify/rate-limit";
 
-import {S3Client, ListBucketsCommand, GetObjectCommand} from "@aws-sdk/client-s3";
+import {GetObjectCommand, ListBucketsCommand, S3Client} from "@aws-sdk/client-s3";
 
 import Environment from "../environment";
-import {Readable} from "stream";
-import {Buffer} from "buffer";
 
 export class Server {
     public readonly fastify: FastifyInstance;
@@ -42,13 +40,13 @@ export class Server {
                 '*': string;
             },
         }>, reply) => {
-            const { bucket, '*': key } = request.params;
-            if(!key) return reply.code(400).send({error: 'Missing resource key'});
-            const { Body } = await this.s3.send(new GetObjectCommand({
+            const {bucket, '*': key} = request.params;
+            if (!key) return reply.code(400).send({error: 'Missing resource key'});
+            const {Body} = await this.s3.send(new GetObjectCommand({
                 Bucket: bucket,
                 Key: key,
             }));
-            if(!Body) return reply.code(404).send({error: 'Resource not found'});
+            if (!Body) return reply.code(404).send({error: 'Resource not found'});
             const arr = Body.transformToWebStream();
             reply.send(arr);
         });
