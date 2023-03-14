@@ -29,6 +29,61 @@ export class Server {
     }
 
     public async routes(): Promise<void> {
+        this.fastify.get('/', async (request, reply) => {
+            reply.header('Content-Type', 'text/html; charset=utf-8').send(`
+                <h1>Marcin Kondrat</h1>
+                
+                <hr/>
+                
+                <h2>Projects</h2>
+                <ul>
+                    <li>
+                        
+                        <p>Personal website</p>
+                        <p>
+                            <code>You're here :)</code>
+                        </p>
+                    </li>
+                    <li>
+                        <p>Assistants Center</p>
+                        <p>
+                            <a href="https://github.com/Assistants-Center" target="_blank">GitHub</a>
+                        </p>
+                    </li>
+                    
+                    <li>
+                        <p>Discord Dashboard</p>
+                        <p>
+                            <a href="https://github.com/Discord-Dashboard" target="_blank">GitHub</a>
+                        </p>
+                    </li>
+                </ul>
+                
+                <hr/>
+                
+                <h2>API</h2>
+                <ul>
+                        <li>
+                            <p>GET S3 Buckets</p>
+                            <p>
+                                <code>/s3</code>
+                            </p>
+                        </li>
+                        <li>
+                            <p>GET S3 Object</p>
+                            <p>
+                                <code>/s3/:bucket/:key</code>
+                            </p>
+                        </li>
+                </ul>
+                
+                <hr/>
+            
+               
+                <p><i>Copyright &copy; 2023 Marcin Kondrat. All rights reserved.</i></p>
+`);
+        });
+
         this.fastify.get('/s3', async (request, reply) => {
             const buckets = await this.s3.send(new ListBucketsCommand({}));
             return buckets.Buckets;
